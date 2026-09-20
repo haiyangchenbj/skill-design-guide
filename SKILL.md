@@ -9,7 +9,7 @@ description: >
   Parallelization, Orchestrator-Workers, Evaluator-Optimizer), write clean
   SKILL.md files, and catch common mistakes with a governance-aware quality checklist.
   Based on design principles from Anthropic, OpenAI, and LangChain.
-version: "1.7.0"
+version: "1.7.1"
 agent_created: true
 category: "Architecture / Design Patterns"
 license: "MIT"
@@ -171,6 +171,8 @@ Five workflow patterns. Full details in `references/pattern-details.md`.
 | `references/` | Domain knowledge (loaded on demand) |
 | `scripts/` | Deterministic steps |
 | `assets/` | Templates, configs |
+| `hooks/` | Host-session hooks — opt-in gated, fail-open (see Behavior Surface) |
+| `evals/` | Runnable output-quality checks for the skill itself |
 
 ### SKILL.md Template
 
@@ -232,7 +234,7 @@ Overview paragraph.
 
 After completing a skill, run the full governance-aware checklist. Load `references/quality-checklist.md` for details.
 
-Structure ✓ | Principles ✓ | Tools ✓ | Guardrails ✓ | Observability ✓
+Structure ✓ | Principles ✓ | Tools ✓ | Guardrails ✓ | Behavior surface ✓ | Observability ✓
 
 ---
 
@@ -247,6 +249,24 @@ Structure ✓ | Principles ✓ | Tools ✓ | Guardrails ✓ | Observability ✓
 | **No guardrails** | Add Hard Rules + Failure Handling |
 | **Vague output** | Define exact format and fields |
 | **Publishing dirty** | Before publishing, run `skill-publish` to audit and clean |
+| **Undeclared side effects** | Declare every network/credential behavior in the frontmatter (see Behavior Surface) |
+
+---
+
+## Behavior Surface: Minimal, Opt-in, Declared
+
+Rules for anything a skill ships beyond prose — hooks, scripts, platform adapters. Distilled from live scanner findings and a 48k-star community skill (2026-09).
+
+| Rule | What it means |
+|------|---------------|
+| **Opt-in only** | Anything that runs automatically (hooks, session-start injection) is gated behind a user-created flag file; flag absent → do nothing |
+| **Fail open at the host boundary** | A hook or helper that misbehaves must never block the host session: catch everything, exit 0 |
+| **Resolve paths from the script's own location** | Never trust environment variables to locate bundled files — derive them from the script path |
+| **Single source of truth** | One canonical rules file; platform adapters only inject it, never copy it — copies drift and contradict |
+| **Declarations match behavior** | Every network endpoint, credential source, and file read the scripts perform must appear in the frontmatter (`permissions` + capability tokens). Scanners flag undeclared behavior (LP1), and absolute claims like "never reads files" must be scoped when another component does read one |
+| **Ship an override section** | State when the skill's own rules yield — safety > task > harness > style. Rules without an escape hatch get discarded wholesale |
+
+Keep the surface minimal: the best helper does nothing until explicitly invoked, and nothing harmful when it fails.
 
 ---
 
@@ -280,9 +300,10 @@ When the skill is ready to share on ClawHub/GitHub, use **`skill-publish`** to a
 
 ---
 
-*v1.4.6 | Based on Anthropic/OpenAI/LangChain design principles | 2026-08-02*
+*v1.7.1 | Based on Anthropic/OpenAI/LangChain design principles | 2026-09-20*
 
 **Changelog:**
+- v1.7.1: Added "Behavior Surface" section (opt-in gating, fail-open hooks, path self-resolution, single source of truth, declaration-behavior match, override section) + `hooks/` and `evals/` as optional components + undeclared-side-effects anti-pattern. Distilled from the i-have-adhd skill audit and the LP1 scanner findings. (Changelog entries for v1.5.0-v1.7.0 were not kept; the frontmatter version remained authoritative.)
 - v1.4.6: Published merged content to the correct slug `skill-design-guide-skill` — restores 9 `metadata.openclaw.tags` (discoverability) + 1.4.4 governance-aware checklist / Governance & Continuity checks. (Prior 1.4.5/1.4.6 attempts landed on a stray `skill-design-guide` slug by mistake; that duplicate should be deleted.)
 - v1.4.5: Restored `metadata.openclaw.tags` (9 discoverability tags) dropped in the 1.4.4 sync; no content change beyond 1.4.4 governance additions
 - v1.4.4: Added governance checks for single source of truth, private-data separation, secret scanning, retry/re-run, external-action gates, and persistent task continuity

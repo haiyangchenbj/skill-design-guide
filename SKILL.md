@@ -1,6 +1,6 @@
 ---
 name: skill-design-guide
-slug: skill-design-guide
+slug: skill-design-guide-skill
 displayName: Skill Design Guide
 display_name: "Skill Design Guide"
 description: >
@@ -9,7 +9,7 @@ description: >
   Parallelization, Orchestrator-Workers, Evaluator-Optimizer), write clean
   SKILL.md files, and catch common mistakes with a governance-aware quality checklist.
   Based on design principles from Anthropic, OpenAI, and LangChain.
-version: "1.7.1"
+version: "1.7.2"""
 agent_created: true
 category: "Architecture / Design Patterns"
 license: "MIT"
@@ -66,6 +66,7 @@ This guide answers **WHY**, not HOW. See `references/agent-design-research.md` f
 2. **Brain ≠ Hands.** LLM decides what to do (SKILL.md). Deterministic code does it (scripts/). Never mix them.
 3. **No full preload.** References are loaded on-demand. Never dump everything into context at once.
 4. **Every skill must have:** triggers, steps tagged `[Deterministic]`/`[LLM]`, Hard Rules, Failure Handling, Output Format.
+7. **Maintain what you publish.** A published skill unchanged for over four weeks gets a genuine micro-improvement pass — never an empty version bump. Each update must contain at least one real change.
 
 ---
 
@@ -303,8 +304,9 @@ When the skill is ready to share on ClawHub/GitHub, use **`skill-publish`** to a
 *v1.7.1 | Based on Anthropic/OpenAI/LangChain design principles | 2026-09-20*
 
 **Changelog:**
+- v1.7.2: Added Hard Rule 7 (maintain published skills: real micro-improvements, no empty bumps)
 - v1.7.1: Added "Behavior Surface" section (opt-in gating, fail-open hooks, path self-resolution, single source of truth, declaration-behavior match, override section) + `hooks/` and `evals/` as optional components + undeclared-side-effects anti-pattern. Distilled from the i-have-adhd skill audit and the LP1 scanner findings. (Changelog entries for v1.5.0-v1.7.0 were not kept; the frontmatter version remained authoritative.)
-- v1.4.6: Published merged content to the correct slug `skill-design-guide-skill` — restores 9 `metadata.openclaw.tags` (discoverability) + 1.4.4 governance-aware checklist / Governance & Continuity checks. (Prior 1.4.5/1.4.6 attempts landed on a stray `skill-design-guide` slug by mistake; that duplicate should be deleted.)
+- v1.4.6: Published merged content to the correct slug `skill-design-guide-skill` — restores 9 `metadata.openclaw.tags` (discoverability) + 1.4.4 governance-aware checklist / Governance & Continuity checks. (The bare `skill-design-guide` slug on ClawHub is occupied by an unrelated third-party account — owner `tttt-bjgs`, old Chinese draft published 2026-03, verified via inspect owner field 2026-09-20. It is not ours: never delete or publish to it. This is why the canonical slug carries the `-skill` suffix. An earlier version of this line wrongly assumed it was our own stray duplicate.)
 - v1.4.5: Restored `metadata.openclaw.tags` (9 discoverability tags) dropped in the 1.4.4 sync; no content change beyond 1.4.4 governance additions
 - v1.4.4: Added governance checks for single source of truth, private-data separation, secret scanning, retry/re-run, external-action gates, and persistent task continuity
 - v1.4.3: Restored display name "Skill Design Guide"

@@ -9,7 +9,7 @@ description: >
   Parallelization, Orchestrator-Workers, Evaluator-Optimizer), write clean
   SKILL.md files, and catch common mistakes with a governance-aware quality checklist.
   Based on design principles from Anthropic, OpenAI, and LangChain.
-version: "1.7.2"""
+version: "1.7.3"
 agent_created: true
 category: "Architecture / Design Patterns"
 license: "MIT"
@@ -66,7 +66,7 @@ This guide answers **WHY**, not HOW. See `references/agent-design-research.md` f
 2. **Brain ≠ Hands.** LLM decides what to do (SKILL.md). Deterministic code does it (scripts/). Never mix them.
 3. **No full preload.** References are loaded on-demand. Never dump everything into context at once.
 4. **Every skill must have:** triggers, steps tagged `[Deterministic]`/`[LLM]`, Hard Rules, Failure Handling, Output Format.
-7. **Maintain what you publish.** A published skill unchanged for over four weeks gets a genuine micro-improvement pass — never an empty version bump. Each update must contain at least one real change.
+5. **Maintain what you publish.** A published skill unchanged for over four weeks gets a genuine micro-improvement pass — never an empty version bump. Each update must contain at least one real change.
 
 ---
 

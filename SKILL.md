@@ -9,7 +9,7 @@ description: >
   Parallelization, Orchestrator-Workers, Evaluator-Optimizer), write clean
   SKILL.md files, and catch common mistakes with a governance-aware quality checklist.
   Based on design principles from Anthropic, OpenAI, and LangChain.
-version: "1.7.3"
+version: "1.7.4"
 agent_created: true
 category: "Architecture / Design Patterns"
 license: "MIT"
@@ -301,7 +301,7 @@ When the skill is ready to share on ClawHub/GitHub, use **`skill-publish`** to a
 
 ---
 
-*v1.7.1 | Based on Anthropic/OpenAI/LangChain design principles | 2026-09-20*
+*v1.7.3 | Based on Anthropic/OpenAI/LangChain design principles | 2026-09-20*
 
 **Changelog:**
 - v1.7.2: Added Hard Rule 7 (maintain published skills: real micro-improvements, no empty bumps)
